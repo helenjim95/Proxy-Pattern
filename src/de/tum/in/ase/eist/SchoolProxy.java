@@ -26,9 +26,8 @@ public class SchoolProxy implements ConnectionInterface {
         if (!denylistedHosts.contains(domain)) {
             networkConnection.connect(url);
         } else {
-            if (authorized) {
                 System.err.printf("Connection to '%s' was rejected!", domain);
-            } else {
+            if (!authorized) {
                 System.out.printf("redirecting to %s", redirectPage.toString());
             }
         }
@@ -43,7 +42,9 @@ public class SchoolProxy implements ConnectionInterface {
     }
 
     public void login(int teacherID) {
-        authorized = true;
+        if (teacherIDs.contains(teacherID)) {
+            authorized = true;
+        }
     }
 
     public void logout() {
