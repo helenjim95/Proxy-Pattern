@@ -24,11 +24,11 @@ public class SchoolProxy implements ConnectionInterface {
         String domain = url.toString().toLowerCase().strip().replace("https://", "").split("/")[0];
 
         if (!authorized && denylistedHosts.contains(domain)) {
-            System.err.print(String.format("Connection to '%s' was rejected!", url.toString().toLowerCase().strip().replace("https://", "")));
+            System.err.print(String.format("Connection to '%s' was rejected!", domain));
             System.out.print(String.format("redirecting to %s", redirectPage.toString()));
             networkConnection.connect(redirectPage);
         }
-        else if (!denylistedHosts.contains(domain)) {
+        else {
             networkConnection.connect(url);
         }
     }
