@@ -27,9 +27,9 @@ public class SchoolProxy implements ConnectionInterface {
             networkConnection.connect(url);
         } else {
                 System.err.printf("Connection to '%s' was rejected!", domain);
-            if (!authorized) {
+                System.out.println();
                 System.out.printf("redirecting to %s", redirectPage.toString());
-            }
+                System.out.println();
         }
     }
 
