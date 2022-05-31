@@ -23,7 +23,7 @@ public class SchoolProxy implements ConnectionInterface {
     public void connect(URL url) {
         String domain = url.toString().toLowerCase().strip().replace("https://", "").split("/")[0];
 
-        if (!denylistedHosts.contains(domain)) {
+        if (authorized && !denylistedHosts.contains(domain)) {
             networkConnection.connect(url);
         } else {
                 System.err.printf("Connection to '%s' was rejected!", domain);
@@ -43,11 +43,13 @@ public class SchoolProxy implements ConnectionInterface {
 
     public void login(int teacherID) {
         if (teacherIDs.contains(teacherID)) {
-            authorized = true;
+            this.authorized = true;
+        } else {
+            this.authorized = false;
         }
     }
 
     public void logout() {
-        authorized = false;
+        this.authorized = false;
     }
 }
