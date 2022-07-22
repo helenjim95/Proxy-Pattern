@@ -24,12 +24,19 @@ public class SchoolProxy implements ConnectionInterface {
         String domain = url.toString().toLowerCase().strip().replace("https://", "")
                             .split("/")[0];
 
-        if (!denylistedHosts.contains(domain) || authorized) {
+        boolean isDenied = false;
+        for (String deniedHost : denylistedHosts) {
+            if (deniedHost.equals(domain)) {
+                isDenied = true;
+                break;
+            }
+        }
+        if (!isDenied || authorized) {
             networkConnection.connect(url);
         } else {
-            System.err.print(String.format("Connection to %s was rejected!", url.toString()));
-            System.out.println(String.format("Connection to %s was rejected!", url.toString()));
-            System.out.print(String.format("redirecting to %s", redirectPage.toString()));
+            System.err.printf("The request to %s was rejected!", domain);
+            System.out.printf("The request to %s was rejected!%n", domain);
+            System.out.printf("redirecting to %s", redirectPage.toString());
             System.out.println();
             networkConnection.connect(redirectPage);
         }
@@ -44,10 +51,11 @@ public class SchoolProxy implements ConnectionInterface {
     }
 
     public void login(int teacherID) {
-        if (teacherIDs.contains(teacherID)) {
-            authorized = true;
-        } else {
-            authorized = false;
+        for (int id : teacherIDs) {
+            if (id == teacherID) {
+                authorized = true;
+                break;
+            }
         }
     }
 
