@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class SchoolProxy implements ConnectionInterface {
 
-    // TODO: Implement the SchoolProxy
+    // Implement the SchoolProxy
     private Set<String> denylistedHosts;
     private URL redirectPage;
     private Set<Integer> teacherIDs;
@@ -21,16 +21,16 @@ public class SchoolProxy implements ConnectionInterface {
     }
 
     public void connect(URL url) {
-        String domain = url.toString().toLowerCase().strip().replace("https://", "").split("/")[0];
+        String domain = url.toString().toLowerCase().strip().replace("https://", "")
+                            .replace("http://", "").split("/")[0];
 
-        if (!denylistedHosts.contains(domain)) {
+        if (!denylistedHosts.contains(domain) || authorized) {
             networkConnection.connect(url);
         } else {
             System.err.print(String.format("Connection to '%s' was rejected!", domain));
-            if (!authorized) {
-                System.out.print(String.format("redirecting to %s", redirectPage.toString()));
-                networkConnection.connect(redirectPage);
-            }
+            System.out.print(String.format("redirecting to %s", redirectPage.toString()));
+            System.out.println();
+            networkConnection.connect(redirectPage);
         }
     }
 
@@ -44,13 +44,13 @@ public class SchoolProxy implements ConnectionInterface {
 
     public void login(int teacherID) {
         if (teacherIDs.contains(teacherID)) {
-            this.authorized = true;
+            authorized = true;
         } else {
-            this.authorized = false;
+            authorized = false;
         }
     }
 
     public void logout() {
-        this.authorized = false;
+        authorized = false;
     }
 }

@@ -4,6 +4,8 @@ import java.net.URL;
 
 public class NetworkConnection implements ConnectionInterface {
 
+	private ConnectionInterface connectionInterface;
+
 	private URL currentUrl;
 	private boolean connected;
 
