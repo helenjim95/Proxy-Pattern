@@ -22,12 +22,13 @@ public class SchoolProxy implements ConnectionInterface {
 
     public void connect(URL url) {
         String domain = url.toString().toLowerCase().strip().replace("https://", "")
-                            .replace("http://", "").split("/")[0];
+                            .split("/")[0];
 
         if (!denylistedHosts.contains(domain) || authorized) {
             networkConnection.connect(url);
         } else {
-            System.err.print(String.format("Connection to '%s' was rejected!", domain));
+            System.err.print(String.format("Connection to %s was rejected!", url.toString()));
+            System.out.println(String.format("Connection to %s was rejected!", url.toString()));
             System.out.print(String.format("redirecting to %s", redirectPage.toString()));
             System.out.println();
             networkConnection.connect(redirectPage);
