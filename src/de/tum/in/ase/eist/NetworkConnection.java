@@ -2,6 +2,8 @@ package de.tum.in.ase.eist;
 
 import java.net.URL;
 
+
+//TODO: service object class
 public class NetworkConnection implements ConnectionInterface {
 
 	private URL currentUrl;

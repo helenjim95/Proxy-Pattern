@@ -3,6 +3,7 @@ package de.tum.in.ase.eist;
 import java.net.URL;
 import java.util.Set;
 
+//TODO: proxy class implements service interface
 public class SchoolProxy implements ConnectionInterface {
 
     // Implement the SchoolProxy
@@ -10,8 +11,11 @@ public class SchoolProxy implements ConnectionInterface {
     private URL redirectPage;
     private Set<Integer> teacherIDs;
     private boolean authorized;
+
+//    TODO: declare reference to the actual service object
     private NetworkConnection networkConnection;
 
+//    TODO: initiate instance of the actual service object
     public SchoolProxy(Set<String> denylistedHosts, URL redirectPage, Set<Integer> teacherIDs) {
         this.denylistedHosts = denylistedHosts;
         this.redirectPage = redirectPage;
@@ -20,6 +24,7 @@ public class SchoolProxy implements ConnectionInterface {
         authorized = false;
     }
 
+//    TODO: delegate method calls to the actual service object
     public void connect(URL url) {
         String domain = url.toString().toLowerCase().strip().replace("https://", "")
                             .split("/")[0];
