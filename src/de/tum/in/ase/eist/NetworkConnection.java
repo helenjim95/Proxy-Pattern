@@ -31,6 +31,6 @@ public class NetworkConnection implements ConnectionInterface {
 	}
 
 	public boolean isConnected() {
-		return connected;
+		return this.connected;
 	}
 }

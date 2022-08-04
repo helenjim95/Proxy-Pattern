@@ -20,51 +20,35 @@ public class SchoolProxy implements ConnectionInterface {
         this.denylistedHosts = denylistedHosts;
         this.redirectPage = redirectPage;
         this.teacherIDs = teacherIDs;
-        networkConnection = new NetworkConnection();
-        authorized = false;
+        this.networkConnection = new NetworkConnection();
+        this.authorized = false;
     }
 
 //    TODO: delegate method calls to the actual service object
     public void connect(URL url) {
-        String domain = url.toString().toLowerCase().strip().replace("https://", "")
-                            .split("/")[0];
-
-        boolean isDenied = false;
-        for (String deniedHost : denylistedHosts) {
-            if (deniedHost.equals(domain)) {
-                isDenied = true;
-                break;
-            }
-        }
-        if (!isDenied || authorized) {
-            networkConnection.connect(url);
-        } else {
-            System.err.printf("The request to %s was rejected!", domain);
-            System.out.printf("The request to %s was rejected!%n", domain);
-            System.out.printf("redirecting to %s", redirectPage.toString());
-            System.out.println();
-            networkConnection.connect(redirectPage);
-        }
+        if (this.denylistedHosts.contains(url.getHost()) && !this.authorized) {
+            System.out.println("Connection to " + url + " rejected!");
+            System.out.println("You will be redirected to " + this.redirectPage);
+            this.networkConnection.connect(redirectPage);
+        } else
+            this.networkConnection.connect(url);
     }
 
     public void disconnect() {
-        networkConnection.disconnect();
+        this.networkConnection.disconnect();
     }
 
     public boolean isConnected() {
-        return networkConnection.isConnected();
+        return this.networkConnection.isConnected();
     }
 
     public void login(int teacherID) {
-        for (int id : teacherIDs) {
-            if (id == teacherID) {
-                authorized = true;
-                break;
-            }
+        if (this.teacherIDs.contains(teacherID)) {
+                this.authorized = true;
         }
     }
 
     public void logout() {
-        authorized = false;
+        this.authorized = false;
     }
 }
