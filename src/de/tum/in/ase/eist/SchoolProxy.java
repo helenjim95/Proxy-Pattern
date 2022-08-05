@@ -27,9 +27,9 @@ public class SchoolProxy implements ConnectionInterface {
 //    TODO: delegate method calls to the actual service object
     public void connect(URL url) {
         if (this.denylistedHosts.contains(url.getHost()) && !this.authorized) {
-            System.out.println("Connection to " + url + " rejected!");
+            System.err.println("Connection to " + url + " was rejected!");
             System.out.println("You will be redirected to " + this.redirectPage);
-            this.networkConnection.connect(redirectPage);
+            this.networkConnection.connect(this.redirectPage);
         } else
             this.networkConnection.connect(url);
     }
